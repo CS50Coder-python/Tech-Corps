@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pencil and Pen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: one long school-notebook page. AI text is drawn as pencil (gray, dashed, mono);
+   anything a human decides turns to ink (blue handwriting). Red pen marks checking. */
+:root{
+  --paper:#F5F7FB; --sheet:#FFFFFF; --rule:#DFE6F1; --margin:#EDB3AA;
+  --text:#1B2130; --muted:#586174;
+  --ink:#2136B5; --ink-soft:#E7EBFC;
+  --graphite:#7A808C; --graphite-soft:#EFF1F4;
+  --red:#C23E28; --red-soft:#FBE8E4;
+  --ok:#1B7A4B; --ok-soft:#E2F3E9;
+  --hi:#FFE66B;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-hand:"Kalam", "Comic Sans MS", "Segoe Print", cursive;
+  --f-ai:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11141B; --sheet:#191D26; --rule:#252B37; --margin:#5B2F2A;
+    --text:#E6E9F0; --muted:#A2A9B7;
+    --ink:#94A9FF; --ink-soft:#1E2646;
+    --graphite:#9BA1AC; --graphite-soft:#222732;
+    --red:#FF8B74; --red-soft:#3A201C;
+    --ok:#62D39C; --ok-soft:#15302A;
+    --hi:#6E6014;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11141B; --sheet:#191D26; --rule:#252B37; --margin:#5B2F2A;
+  --text:#E6E9F0; --muted:#A2A9B7;
+  --ink:#94A9FF; --ink-soft:#1E2646;
+  --graphite:#9BA1AC; --graphite-soft:#222732;
+  --red:#FF8B74; --red-soft:#3A201C;
+  --ok:#62D39C; --ok-soft:#15302A;
+  --hi:#6E6014;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{
+  margin:0; background:var(--paper); color:var(--text);
+  font-family:var(--f-body); font-size:17px; line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+h1,h2,h3{font-family:var(--f-display); line-height:1.1; text-wrap:balance; margin:0}
+h2{font-size:clamp(1.8rem, 4vw, 2.6rem); font-weight:800; letter-spacing:-.01em}
+h3{font-size:1.25rem; font-weight:700}
+p{margin:0}
+a{color:var(--ink)}
+button{font:inherit; cursor:pointer}
+:focus-visible{outline:3px solid var(--ink); outline-offset:3px; border-radius:4px}
+.wrap{max-width:980px; margin:0 auto}
+.eyebrow{font-family:var(--f-ai); font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.lead{font-size:1.15rem; color:var(--muted); max-width:62ch}
+.hl{background:linear-gradient(transparent 58%, var(--hi) 58%); padding:0 .1em}
+.hand{font-family:var(--f-hand); color:var(--ink)}
+.small{font-size:.9rem; color:var(--muted)}
+
+/* nav */
+nav.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--paper); border-bottom:1px solid var(--rule)}
+nav.top .wrap{display:flex; align-items:center; gap:18px; padding-block:10px}
+.brand{font-family:var(--f-hand); font-weight:700; font-size:1.25rem; color:var(--ink); white-space:nowrap; text-decoration:none}
+.navlinks{display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; min-width:0}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{font-size:.9rem; color:var(--muted); text-decoration:none; padding:6px 10px; border-radius:999px; white-space:nowrap}
+.navlinks a:hover,.navlinks a.on{background:var(--ink-soft); color:var(--ink)}
+
+/* sections */
+section{padding-block:72px; border-bottom:1px dashed var(--rule)}
+section:last-of-type{border-bottom:0}
+.sec-head{display:grid; gap:12px; margin-bottom:32px}
+
+/* AI vs human visual language */
+.ai{
+  font-family:var(--f-ai); font-size:.95rem; color:var(--graphite);
+  border:1.5px dashed var(--graphite); border-radius:var(--radius);
+  background:var(--graphite-soft); padding:14px 16px;
+}
+.ai .tag,.human .tag{display:inline-block; font-family:var(--f-ai); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px}
+.ai .tag{color:var(--graphite)}
+.human{
+  font-family:var(--f-hand); font-size:1.2rem; color:var(--ink); line-height:1.4;
+  border:2px solid var(--ink); border-radius:var(--radius); background:var(--ink-soft); padding:14px 16px;
+}
+.human .tag{color:var(--ink)}
+
+/* hero */
+.hero{padding-block:64px 72px}
+.hero-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center}
+.hero h1{font-size:clamp(2.6rem, 7vw, 4.6rem); font-weight:800; letter-spacing:-.02em}
+.hero h1 .pencil{color:var(--graphite); font-family:var(--f-ai); font-weight:400; font-size:.78em; letter-spacing:-.03em; display:block}
+.hero h1 .pen{font-family:var(--f-hand); color:var(--ink); font-weight:700; display:block; margin-top:6px}
+.hero .lead{margin-top:20px}
+.cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:28px}
+.btn{border:2px solid var(--ink); background:var(--ink); color:var(--sheet); padding:11px 18px; border-radius:999px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px}
+.btn.ghost{background:transparent; color:var(--ink)}
+.btn.pencil{background:transparent; color:var(--graphite); border:2px dashed var(--graphite); font-family:var(--f-ai); font-weight:500; font-size:.92rem}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn.red{background:var(--red); border-color:var(--red)}
+
+.notecard{
+  background:var(--sheet); border-radius:var(--radius); padding:22px 22px 22px 46px; position:relative;
+  background-image:repeating-linear-gradient(var(--sheet) 0 31px, var(--rule) 31px 32px);
+  box-shadow:0 1px 0 var(--rule), 0 10px 30px -18px rgba(20,30,60,.35);
+}
+.notecard::before{content:""; position:absolute; left:30px; top:0; bottom:0; width:2px; background:var(--margin)}
+.notecard .q{font-family:var(--f-ai); font-size:.85rem; color:var(--muted); margin-bottom:12px}
+.notecard .ai{margin-bottom:14px}
+.notecard label{display:block; font-family:var(--f-ai); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); margin-bottom:4px}
+.inkfield{width:100%; font-family:var(--f-hand); font-size:1.25rem; color:var(--ink); background:transparent; border:0; border-bottom:2px solid var(--ink); padding:4px 2px; outline:none}
+.inkfield::placeholder{color:var(--graphite); opacity:.7}
+textarea.inkfield{resize:vertical; min-height:90px; line-height:32px; border:2px solid var(--ink); border-radius:8px; padding:4px 10px; background:var(--sheet)}
+.stamp{display:inline-block; margin-top:14px; font-family:var(--f-display); font-weight:800; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--red); border:2.5px solid var(--red); border-radius:6px; padding:4px 10px; transform:rotate(-4deg)}
+.stamp.pop{animation:pop .35s ease-out}
+@keyframes pop{0%{transform:rotate(-4deg) scale(1.6); opacity:0} 100%{transform:rotate(-4deg) scale(1); opacity:1}}
+.strike{text-decoration:line-through; text-decoration-color:var(--red); text-decoration-thickness:2px}
+
+/* belief */
+.belief{font-family:var(--f-display); font-weight:700; font-size:clamp(1.35rem, 3vw, 1.9rem); line-height:1.3; max-width:30ch; text-wrap:balance}
+.belief-box{display:grid; grid-template-columns:auto 1fr; gap:22px; align-items:start; margin-bottom:40px}
+.belief-box .num{font-family:var(--f-hand); font-size:3.2rem; line-height:1; color:var(--ink)}
+.pillars{display:grid; grid-template-columns:repeat(3, 1fr); gap:16px}
+.pillar{background:var(--sheet); border:1px solid var(--rule); border-radius:var(--radius); padding:20px; display:grid; gap:10px; align-content:start; text-align:left; color:var(--text)}
+.pillar .k{font-family:var(--f-ai); font-size:.75rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+.pillar h3{font-size:1.2rem}
+.pillar .more{font-size:.95rem; color:var(--muted); border-top:1px dashed var(--rule); padding-top:10px}
+.pillar .toggle{font-size:.85rem; color:var(--ink); font-weight:700}
+.pillar[aria-expanded="false"] .more{display:none}
+
+/* AI connection */
+.split{display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start}
+.panel{background:var(--sheet); border:1px solid var(--rule); border-radius:var(--radius); padding:22px; min-width:0}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px}
+.chip{border:1.5px solid var(--rule); background:var(--paper); color:var(--text); border-radius:999px; padding:6px 12px; font-size:.88rem}
+.chip[aria-pressed="true"]{border-color:var(--ink); background:var(--ink-soft); color:var(--ink); font-weight:700}
+.prompt-line{font-family:var(--f-ai); font-size:.95rem; margin-bottom:14px}
+.prompt-line .cursor{display:inline-block; width:9px; height:1.05em; background:var(--graphite); vertical-align:-2px; animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.bars{display:grid; gap:8px}
+.bar{display:grid; grid-template-columns:minmax(0,9.5rem) 1fr 3rem; gap:10px; align-items:center; font-family:var(--f-ai); font-size:.85rem}
+.bar .lbl{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.bar .track{height:14px; background:var(--graphite-soft); border-radius:4px; overflow:hidden}
+.bar .fill{height:100%; background:var(--graphite); border-radius:4px; transition:width .5s ease}
+.bar.top .fill{background:var(--ink)}
+.bar .pct{text-align:right; font-variant-numeric:tabular-nums; color:var(--muted)}
+.ctx-btn{margin-top:16px}
+.note{margin-top:14px; font-size:.95rem; padding:12px 14px; border-left:3px solid var(--ink); background:var(--ink-soft); border-radius:0 8px 8px 0}
+.cases{display:grid; gap:14px}
+.case{display:grid; grid-template-columns:4.2rem 1fr; gap:14px; padding:14px 0; border-bottom:1px dashed var(--rule)}
+.case:last-child{border-bottom:0}
+.case .yr{font-family:var(--f-hand); font-size:1.4rem; color:var(--red); line-height:1.2}
+.case p{font-size:.98rem}
+.why{margin-top:28px; display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:center; padding:20px; border:2px solid var(--red); border-radius:var(--radius); background:var(--red-soft)}
+.why .big{font-family:var(--f-hand); font-size:2.6rem; color:var(--red); line-height:1}
+.statline{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:20px}
+.statline .n{font-family:var(--f-display); font-weight:800; font-size:3rem; color:var(--ink); line-height:1}
+
+/* lab */
+.lab{background:var(--sheet); border:1px solid var(--rule); border-radius:14px; overflow:hidden}
+.lab-top{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--rule); background:var(--paper)}
+.assign{font-family:var(--f-hand); font-size:1.15rem}
+.steps{display:flex; gap:6px; flex-wrap:wrap}
+.step-pill{font-family:var(--f-ai); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:999px; border:1.5px solid var(--rule); color:var(--muted)}
+.step-pill.on{border-color:var(--ink); color:var(--ink); background:var(--ink-soft)}
+.step-pill.done{border-color:var(--ok); color:var(--ok); background:var(--ok-soft)}
+.lab-body{padding:24px 20px 28px; display:grid; gap:18px}
+.who{display:flex; gap:10px; align-items:center; font-family:var(--f-ai); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase}
+.who .dot{width:10px; height:10px; border-radius:50%}
+.who.aiw{color:var(--graphite)} .who.aiw .dot{border:2px dashed var(--graphite)}
+.who.hw{color:var(--ink)} .who.hw .dot{background:var(--ink)}
+.options{display:grid; gap:10px}
+.opt{text-align:left; padding:14px 16px; border-radius:var(--radius); border:1.5px dashed var(--graphite); background:var(--graphite-soft); color:var(--graphite); font-family:var(--f-ai); font-size:.95rem; transition:all .2s}
+.opt:hover{border-color:var(--ink); color:var(--text)}
+.opt.picked{border:2px solid var(--ink); background:var(--ink-soft); color:var(--ink); font-family:var(--f-hand); font-size:1.2rem}
+.fact{border:1.5px dashed var(--graphite); border-radius:var(--radius); background:var(--graphite-soft); padding:14px 16px; display:grid; gap:10px}
+.fact .claim{font-family:var(--f-ai); font-size:.93rem; color:var(--text)}
+.fact .src{font-family:var(--f-ai); font-size:.8rem; color:var(--graphite)}
+.fact .acts{display:flex; flex-wrap:wrap; gap:8px}
+.mini{border:1.5px solid var(--rule); background:var(--sheet); color:var(--text); border-radius:999px; padding:5px 12px; font-size:.85rem; font-weight:700}
+.mini.check{border-color:var(--red); color:var(--red)}
+.mini[aria-pressed="true"]{background:var(--ink); color:var(--sheet); border-color:var(--ink)}
+.verdict{font-size:.92rem; padding:10px 12px; border-radius:8px}
+.verdict.good{background:var(--ok-soft); color:var(--ok)}
+.verdict.bad{background:var(--red-soft); color:var(--red)}
+.fact.kept{border:2px solid var(--ink); background:var(--ink-soft)}
+.fact.tossed{opacity:.55}
+.fact.tossed .claim{text-decoration:line-through; text-decoration-color:var(--red)}
+.qbtns{display:flex; flex-wrap:wrap; gap:8px}
+.answer{border-left:3px solid var(--ink); padding:8px 12px; background:var(--ink-soft); border-radius:0 8px 8px 0; font-size:.98rem}
+.answer b{color:var(--ink)}
+.lab-foot{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; padding-top:6px}
+.hint{font-size:.9rem; color:var(--muted)}
+.report{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.report ul{margin:8px 0 0; padding-left:1.1em; display:grid; gap:4px}
+.report .ai li{font-size:.9rem}
+.report .human li{font-size:1.1rem}
+.verdict-big{padding:16px 18px; border-radius:var(--radius); font-size:1.02rem}
+
+/* human jobs */
+.jobs{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px}
+.job{border-top:4px solid var(--ink); background:var(--sheet); border-radius:0 0 var(--radius) var(--radius); padding:20px; display:grid; gap:8px; align-content:start}
+.job.c{border-color:var(--red)}
+.job .verb{font-family:var(--f-hand); font-size:2rem; line-height:1; color:var(--ink)}
+.job.c .verb{color:var(--red)}
+.job .w{font-size:.95rem; color:var(--muted)}
+.job .w b{color:var(--text)}
+.line{padding:22px; border:2px dashed var(--ink); border-radius:var(--radius); margin-bottom:36px; display:grid; gap:8px}
+.line .belief{max-width:none; font-size:clamp(1.15rem,2.5vw,1.45rem)}
+.sorter{display:grid; gap:14px}
+.sort-card{background:var(--sheet); border:1px solid var(--rule); border-radius:var(--radius); padding:18px; display:grid; gap:12px}
+.sort-card .sit{font-weight:700; font-size:1.05rem}
+.sort-opts{display:flex; flex-wrap:wrap; gap:8px}
+.sort-opts button{border:1.5px solid var(--rule); background:var(--paper); color:var(--text); border-radius:999px; padding:6px 12px; font-size:.88rem}
+.sort-opts button[data-v="ai"]{border-style:dashed; font-family:var(--f-ai); font-size:.82rem}
+.sort-opts button[data-v="human"]{font-family:var(--f-hand); font-size:1rem}
+.sort-opts button[aria-pressed="true"]{border-color:var(--ink); background:var(--ink-soft); color:var(--ink); font-weight:700}
+.take{font-size:.95rem; padding:10px 12px; border-radius:8px; background:var(--paper); border:1px solid var(--rule)}
+.take .agree{font-family:var(--f-hand); color:var(--ink); font-size:1.05rem}
+.sort-progress{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px}
+
+/* voices */
+.voices{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-bottom:40px}
+.voice{background:var(--sheet); border-radius:var(--radius); padding:20px 20px 18px; display:grid; gap:12px; align-content:start; border:1px solid var(--rule)}
+.voice.lead-v{grid-column:1 / -1; border:2px solid var(--ink)}
+.voice blockquote{margin:0; font-family:var(--f-hand); font-size:1.18rem; line-height:1.45; color:var(--text)}
+.voice.lead-v blockquote{font-size:1.4rem}
+.voice .by{font-family:var(--f-ai); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.voice .theme{display:inline-block; font-size:.75rem; font-weight:700; color:var(--ink); background:var(--ink-soft); padding:2px 8px; border-radius:999px; justify-self:start}
+.pledge{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start}
+.pledge form{display:grid; gap:12px}
+.board{display:flex; flex-wrap:wrap; gap:10px}
+.sticky{font-family:var(--f-hand); font-size:1.05rem; color:var(--ink); background:var(--sheet); border:1.5px solid var(--ink); border-radius:6px; padding:8px 12px; transform:rotate(var(--r,0deg)); max-width:100%}
+.sticky small{display:block; font-family:var(--f-ai); font-size:.68rem; color:var(--muted); letter-spacing:.06em; text-transform:uppercase}
+
+/* design choices */
+.choices{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+.choice{display:grid; grid-template-columns:5.5rem 1fr; gap:16px; align-items:center; padding:16px; background:var(--sheet); border:1px solid var(--rule); border-radius:var(--radius)}
+.swatch{height:56px; border-radius:8px; display:grid; place-items:center; font-size:.85rem; text-align:center; padding:4px}
+.swatch.s-ai{border:1.5px dashed var(--graphite); background:var(--graphite-soft); color:var(--graphite); font-family:var(--f-ai)}
+.swatch.s-ink{border:2px solid var(--ink); background:var(--ink-soft); color:var(--ink); font-family:var(--f-hand); font-size:1.1rem}
+.swatch.s-red{border:2px solid var(--red); color:var(--red); font-family:var(--f-display); font-weight:800; letter-spacing:.1em; font-size:.7rem}
+.swatch.s-lock{border:1.5px dashed var(--graphite); color:var(--graphite); font-family:var(--f-ai); text-decoration:line-through}
+.swatch.s-paper{background-image:repeating-linear-gradient(var(--sheet) 0 11px, var(--rule) 11px 12px); border:1px solid var(--rule); position:relative}
+.swatch.s-paper::before{content:""; position:absolute; left:12px; top:0; bottom:0; width:2px; background:var(--margin)}
+.swatch.s-wait{border:2px solid var(--ink); color:var(--ink); font-family:var(--f-ai); font-size:.75rem}
+.choice p{font-size:.95rem; color:var(--muted)}
+.choice h3{font-size:1.05rem; margin-bottom:4px}
+
+footer{padding-block:56px 72px; text-align:center}
+footer .belief{margin:0 auto; max-width:none}
+footer .belief .pencil{color:var(--graphite); font-family:var(--f-ai); font-weight:400}
+footer .belief .pen{color:var(--ink); font-family:var(--f-hand)}
+
+/* modal */
+.scrim{position:fixed; inset:0; background:rgba(10,14,25,.5); display:grid; place-items:center; z-index:50; padding:20px}
+.modal{background:var(--sheet); border-radius:14px; max-width:440px; width:100%; padding:26px; display:grid; gap:14px; border:2px solid var(--ink)}
+.modal h3{font-family:var(--f-hand); color:var(--ink); font-size:1.7rem}
+
+@media (max-width: 820px){
+  .hero-grid,.split,.pledge,.report{grid-template-columns:1fr}
+  .pillars,.jobs{grid-template-columns:1fr}
+  .choices{grid-template-columns:1fr}
+  section{padding-block:56px}
+}
+@media (max-width: 480px){
+  .belief-box{grid-template-columns:1fr; gap:6px}
+  .bar{grid-template-columns:minmax(0,7rem) 1fr 2.6rem}
+  .choice{grid-template-columns:4.2rem 1fr}
+  .notecard{padding-left:40px}
+  .notecard::before{left:24px}
+}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">Pencil &amp; Pen</a>
+    <div class="navlinks">
+      <a href="#believe">What we believe</a>
+      <a href="#how">How AI works</a>
+      <a href="#lab">The Lab</a>
+      <a href="#jobs">Human jobs</a>
+      <a href="#voices">Our voices</a>
+      <a href="#design">Why it looks like this</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Tech Corps Hackathon &middot; <span data-team-name>Team Pencil &amp; Pen</span></p>
+      <h1 style="margin-top:14px">
+        <span class="pencil">AI holds the pencil.</span>
+        <span class="pen">You hold the pen.</span>
+      </h1>
+      <p class="lead">AI is great at finding information and sketching out ideas. It shouldn't get to make your decisions. Pencil can be erased. Pen is the part you sign.</p>
+      <div class="cta-row">
+        <a class="btn" href="#lab">Try the Lab</a>
+        <a class="btn ghost" href="#believe">Read what we believe</a>
+      </div>
+    </div>
+
+    <div class="notecard" id="heroCard">
+      <p class="q">You asked: "What should I do for my science fair project?"</p>
+      <div class="ai" id="heroAI">
+        <span class="tag">AI suggestion &middot; pencil</span>
+        <div>Build a baking soda volcano. It's the most popular project and easy to finish.</div>
+      </div>
+      <label for="heroInput">Your call &middot; pen</label>
+      <input class="inkfield" id="heroInput" type="text" maxlength="90" autocomplete="off" value="Test which pond near my house has the cleanest water">
+      <div id="heroStamp"><span class="stamp">Decided by a human</span></div>
+      <p class="small" style="margin-top:10px">Type your own answer. Watch the pencil get crossed out once you commit.</p>
+    </div>
+  </div>
+</header>
+
+<!-- BELIEF -->
+<section id="believe">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Our core belief</p>
+      <h2>What we believe about AI</h2>
+    </div>
+    <div class="belief-box">
+      <span class="num" aria-hidden="true">&ldquo;</span>
+      <p class="belief">AI is a powerful tool for <span class="hl">finding information</span> and <span class="hl">brainstorming ideas</span>. But it should never dictate your decisions. The final call, and the responsibility that comes with it, stays with people.</p>
+    </div>
+    <p class="small" style="margin-bottom:14px">Three ideas hold this belief up. Tap each to see why.</p>
+    <div class="pillars">
+      <button class="pillar" aria-expanded="false" type="button">
+        <span class="k">Idea 1 &middot; the pencil</span>
+        <h3>AI is a great starting point.</h3>
+        <span>It can scan more than we ever could and give us ten ideas in five seconds.</span>
+        <span class="more">We're not anti-AI. All five of us use it. It helps when you're stuck at 11pm and nobody else is awake. Starting points are exactly what it's good at.</span>
+        <span class="toggle">Why we think this &darr;</span>
+      </button>
+      <button class="pillar" aria-expanded="false" type="button">
+        <span class="k">Idea 2 &middot; the catch</span>
+        <h3>But it's guessing.</h3>
+        <span>A chatbot predicts likely words from patterns. It doesn't know what's true, and it doesn't know you.</span>
+        <span class="more">It can say something false in the same confident voice it uses for something true. It also has no idea about your schedule, your family, or what you care about.</span>
+        <span class="toggle">Why we think this &darr;</span>
+      </button>
+      <button class="pillar" aria-expanded="false" type="button">
+        <span class="k">Idea 3 &middot; the pen</span>
+        <h3>Deciding is a skill. Skip it and you lose it.</h3>
+        <span>Every choice you hand off is practice you don't get.</span>
+        <span class="more">Your decisions shape who you become. If an app picks your essay topic, your friends, and your major, at some point you stop knowing what you'd pick yourself.</span>
+        <span class="toggle">Why we think this &darr;</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- AI CONNECTION -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The real-life AI we're talking about</p>
+      <h2>Students asking chatbots for help</h2>
+      <p class="lead">ChatGPT, Gemini, Snapchat's My AI. Teens use them for homework, and more and more for advice on real choices. So what is the chatbot actually doing when it answers?</p>
+    </div>
+
+    <div class="statline">
+      <span class="n">26%</span>
+      <span>of U.S. teens said they'd used ChatGPT for schoolwork in 2024, double the 13% from 2023. <span class="small">(Pew Research Center, January 2025)</span></span>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <h3 style="margin-bottom:6px">How a chatbot picks its answer</h3>
+        <p class="small" style="margin-bottom:14px">A chatbot writes one word at a time. Each time, it ranks which word is most likely to come next, based on patterns in huge amounts of text written by other people. Pick a question to see it.</p>
+        <div class="chips" id="promptChips" role="group" aria-label="Pick a prompt"></div>
+        <p class="prompt-line" id="promptLine"></p>
+        <div class="bars" id="bars" aria-live="polite"></div>
+        <button class="btn ghost ctx-btn" id="ctxBtn" type="button"></button>
+        <p class="note" id="ctxNote" hidden></p>
+        <p class="small" style="margin-top:12px">This is a simplified picture. The percentages are made up to show the idea, but the ranking-by-likelihood part is how these models really work.</p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-bottom:6px">When the guess goes wrong</h3>
+        <p class="small" style="margin-bottom:6px">Because it's predicting what sounds right, it can produce things that are confident and false. People call this a hallucination.</p>
+        <div class="cases">
+          <div class="case"><span class="yr">2023</span><p>Two New York lawyers were fined $5,000 after they turned in a court filing with six cases that ChatGPT made up. The cases sounded real. Nobody checked. <span class="small">(Mata v. Avianca)</span></p></div>
+          <div class="case"><span class="yr">2023</span><p>In Google's own launch ad for its Bard chatbot, it said the James Webb Space Telescope took the first picture of a planet outside our solar system. That was wrong, and it ran in the company's own promo.</p></div>
+          <div class="case"><span class="yr">Every day</span><p>Recommendation AI, like TikTok's For You page, predicts what will keep you watching and picks your next video. It's influencing what you see, and what feels normal, without you choosing.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why">
+      <span class="big" aria-hidden="true">!</span>
+      <p><b>Why it matters to us:</b> if the AI is wrong and you don't check, its mistake becomes your mistake. Your name goes on the essay, not the chatbot's. And if it's picking for you, it's picking what's popular, not what's right for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Interactive &middot; about 2 minutes</p>
+      <h2>The Lab: use AI the way we think you should</h2>
+      <p class="lead">You've got a school assignment. A pretend AI assistant will help. It will brainstorm, find facts, and summarize. You'll do the parts only a person should do: <span class="hand">choose, check, question, decide.</span></p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-top">
+        <p class="assign">Assignment: give a 2-minute persuasive speech about one thing you'd change at school.</p>
+        <div class="steps" id="stepPills">
+          <span class="step-pill">1 Choose</span>
+          <span class="step-pill">2 Check</span>
+          <span class="step-pill">3 Question</span>
+          <span class="step-pill">4 Decide</span>
+        </div>
+      </div>
+      <div class="lab-body" id="labBody" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HUMAN JOBS -->
+<section id="jobs">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Human responsibility</p>
+      <h2>Three jobs AI doesn't get to take</h2>
+      <p class="lead">Using AI is fine. These are the spots where a person has to stay in the loop, and the reason for each.</p>
+    </div>
+    <div class="jobs">
+      <div class="job c">
+        <span class="verb">Check</span>
+        <p>Look up anything you're going to use before you use it.</p>
+        <p class="w"><b>Why:</b> AI sounds just as sure when it's wrong. You're the one who gets graded, fined, or embarrassed.</p>
+      </div>
+      <div class="job">
+        <span class="verb">Question</span>
+        <p>Ask who disagrees, what's missing, and how it knows.</p>
+        <p class="w"><b>Why:</b> AI leans toward the most common answer. The people it leaves out are often the ones who matter most.</p>
+      </div>
+      <div class="job">
+        <span class="verb">Decide</span>
+        <p>Make the final call yourself and own it.</p>
+        <p class="w"><b>Why:</b> decisions land on real people. AI can't be responsible for anything. You can.</p>
+      </div>
+    </div>
+
+    <div class="line">
+      <p class="eyebrow">Our line</p>
+      <p class="belief">The more a decision affects a person, like their grades, health, relationships, or future, the more a human has to be the one holding the pen.</p>
+    </div>
+
+    <div class="sort-progress">
+      <h3>Pencil or pen? You sort it.</h3>
+      <span class="small" id="sortCount">0 of 8 sorted</span>
+    </div>
+    <p class="small" style="margin-bottom:14px">For each situation, pick how much AI should be involved. You'll see what our team thinks. We might not agree with you, and that's fine. Thinking it through is the point.</p>
+    <div class="sorter" id="sorter"></div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section id="voices">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Teen voices</p>
+      <h2>Why the five of us care</h2>
+      <p class="lead">We're the first group of students growing up with AI in every class. These are the moments that made us think about it.</p>
+    </div>
+    <div class="voices" id="voiceGrid"></div>
+
+    <div class="pledge">
+      <div>
+        <h3 style="margin-bottom:8px">Your turn: what stays in pen?</h3>
+        <p class="small" style="margin-bottom:14px">Name one decision you'll always make yourself, even if AI could do it faster. It's saved on this device only.</p>
+        <form id="pledgeForm">
+          <label for="pledgeInput" class="eyebrow">One decision I'll always keep in pen</label>
+          <input class="inkfield" id="pledgeInput" type="text" maxlength="80" placeholder="Who I trust as a friend" autocomplete="off">
+          <div><button class="btn" type="submit">Sign it</button></div>
+          <p class="small" id="pledgeMsg" hidden></p>
+        </form>
+      </div>
+      <div class="board" id="board" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN CHOICES -->
+<section id="design">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Creative choices</p>
+      <h2>Why it looks like this</h2>
+      <p class="lead">Every design choice on this site carries our belief. Here's what each one means.</p>
+    </div>
+    <div class="choices">
+      <div class="choice"><div class="swatch s-ai">AI text</div><div><h3>Gray, dashed, typewriter font = AI</h3><p>Everything the AI says looks like pencil. It's a draft. You can erase it.</p></div></div>
+      <div class="choice"><div class="swatch s-ink">your call</div><div><h3>Blue handwriting = you</h3><p>Only human decisions get ink. When you choose something, it changes from pencil to pen right in front of you.</p></div></div>
+      <div class="choice"><div class="swatch s-red">checked</div><div><h3>Red pen = checking</h3><p>Teachers use red pen to catch mistakes. On this site, you're the one holding it.</p></div></div>
+      <div class="choice"><div class="swatch s-lock">pick for me</div><div><h3>"Pick for me" never works</h3><p>We put that button in the Lab on purpose. Press it and the AI hands the choice back to you.</p></div></div>
+      <div class="choice"><div class="swatch s-wait">waiting for you</div><div><h3>The app waits for you</h3><p>You can't move forward in the Lab until you make a choice. Nothing gets decided automatically.</p></div></div>
+      <div class="choice"><div class="swatch s-paper"></div><div><h3>Notebook paper</h3><p>School is where we learn to think for ourselves, and it's where AI shows up most in our lives.</p></div></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="belief"><span class="pencil">AI holds the pencil.</span> <span class="pen">You hold the pen.</span></p>
+    <p class="small" style="margin-top:14px"><span data-team-name>Team Pencil &amp; Pen</span> &middot; Tech Corps Hackathon</p>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">That one's yours.</h3>
+    <div class="ai"><span class="tag">AI assistant</span><div id="modalText"></div></div>
+    <div><button class="btn" id="modalClose" type="button">Okay, I'll choose</button></div>
+  </div>
+</div>
+
+<script>
+/* ===== Edit your team here ===== */
+const TEAM_NAME = "Team Pencil & Pen";
+const TEAM = [
+  { name:"[Your name]", role:"Team lead", theme:"Experience", lead:true,
+    quote:"I used to let AI plan my whole study schedule. It looked perfect, but it didn't know I have practice on Tuesdays and Thursdays. I kept falling behind and blaming myself. Now I use it to brainstorm, and I make the plan. My grades went up." },
+  { name:"[Member 2]", role:"How AI works", theme:"Experience",
+    quote:"I asked a chatbot for sources for a history paper. Two of the five didn't exist. I only caught it because my teacher made us paste the links." },
+  { name:"[Member 3]", role:"Human jobs", theme:"Concern",
+    quote:"My For You page decided what 'normal' looked like for me for months. I never chose that. Now I ask why I'm seeing something before I believe it." },
+  { name:"[Member 4]", role:"Teen voices", theme:"Hope",
+    quote:"I'm not against AI. It explained chemistry to me when I was stuck at midnight. I just don't want it picking my future. I hope schools teach us how to use it instead of only banning it." },
+  { name:"[Member 5]", role:"Design", theme:"Creative choice",
+    quote:"We argued about the 'Pick for me' button for a whole meeting. We kept it because it shows our point better than any sentence could." },
+];
+const TEAM_PLEDGES = [
+  "Which college I apply to",
+  "What I say to a friend after a fight",
+  "Whether a source is true",
+];
+
+document.querySelectorAll("[data-team-name]").forEach(el => el.textContent = TEAM_NAME);
+
+/* ---------- helpers ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- modal ---------- */
+let lastFocus = null;
+function openModal(title, text){
+  lastFocus = document.activeElement;
+  $("#modalTitle").textContent = title;
+  $("#modalText").textContent = text;
+  $("#scrim").hidden = false;
+  $("#modalClose").focus();
+}
+function closeModal(){ $("#scrim").hidden = true; if(lastFocus) lastFocus.focus(); }
+$("#modalClose").addEventListener("click", closeModal);
+$("#scrim").addEventListener("click", e => { if(e.target.id === "scrim") closeModal(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape" && !$("#scrim").hidden) closeModal(); });
+
+/* ---------- hero ---------- */
+(function(){
+  const input = $("#heroInput"), ai = $("#heroAI div"), stamp = $("#heroStamp");
+  function update(pop){
+    const has = input.value.trim().length >= 3;
+    ai.classList.toggle("strike", has);
+    stamp.innerHTML = has ? '<span class="stamp'+(pop?' pop':'')+'">Decided by a human</span>' : '<span class="small">The pencil stays a suggestion until you write something.</span>';
+  }
+  let had = true;
+  input.addEventListener("input", () => {
+    const has = input.value.trim().length >= 3;
+    update(has && !had); had = has;
+  });
+  update(false);
+})();
+
+/* ---------- pillars ---------- */
+document.querySelectorAll(".pillar").forEach(p => {
+  p.addEventListener("click", () => {
+    const open = p.getAttribute("aria-expanded") === "true";
+    p.setAttribute("aria-expanded", String(!open));
+    p.querySelector(".toggle").innerHTML = open ? "Why we think this &darr;" : "Hide &uarr;";
+  });
+});
+
+/* ---------- next-word predictor ---------- */
+const PROMPTS = [
+  { id:"major", chip:"College major", text:"The best college major for me is",
+    base:[["Computer Science",31],["Business",24],["Psychology",17],["Nursing",15],["Undecided",13]],
+    ctxLabel:'Tell it: "I love drawing and hate sitting still"',
+    ctx:[["Graphic Design",27],["Architecture",21],["Computer Science",19],["Business",18],["Psychology",15]] },
+  { id:"essay", chip:"Essay topic", text:"A good topic for my persuasive essay is",
+    base:[["Social media",29],["Climate change",26],["School uniforms",19],["Video games",14],["Homework",12]],
+    ctxLabel:'Tell it: "My town just closed its only library"',
+    ctx:[["Saving the library",34],["Social media",20],["Climate change",18],["Public funding",16],["Homework",12]] },
+  { id:"friend", chip:"Friend problem", text:"When my friend is mad at me, I should",
+    base:[["apologize",33],["give them space",27],["talk it out",22],["text them",11],["wait",7]],
+    ctxLabel:'Tell it: "They said they need a few days"',
+    ctx:[["give them space",41],["wait",22],["apologize",18],["talk it out",12],["text them",7]] },
+];
+let curPrompt = PROMPTS[0], ctxOn = false;
+function renderPredictor(){
+  $("#promptChips").innerHTML = PROMPTS.map(p =>
+    `<button class="chip" type="button" data-id="${p.id}" aria-pressed="${p===curPrompt}">${esc(p.chip)}</button>`).join("");
+  $("#promptLine").innerHTML = `${esc(curPrompt.text)} <span class="cursor" aria-hidden="true"></span>`;
+  const rows = ctxOn ? curPrompt.ctx : curPrompt.base;
+  const max = Math.max(...rows.map(r => r[1]));
+  $("#bars").innerHTML = rows.map((r,i) =>
+    `<div class="bar ${i===0?'top':''}"><span class="lbl" title="${esc(r[0])}">${esc(r[0])}</span><span class="track"><span class="fill" style="width:${(r[1]/max)*100}%"></span></span><span class="pct">${r[1]}%</span></div>`).join("");
+  $("#ctxBtn").textContent = ctxOn ? "Remove what you told it" : curPrompt.ctxLabel;
+  const note = $("#ctxNote");
+  if(ctxOn){
+    note.hidden = false;
+    note.textContent = "It got closer. But it's still ranking what other people usually say in situations that sound like yours. It can't tell which answer is right for you. That part is your job.";
+  } else {
+    note.hidden = false;
+    note.textContent = `Top answer: "${rows[0][0]}". That's just the most common thing people write after this sentence. It knows nothing about you yet.`;
+  }
+}
+$("#promptChips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  curPrompt = PROMPTS.find(p => p.id === b.dataset.id); ctxOn = false; renderPredictor();
+});
+$("#ctxBtn").addEventListener("click", () => { ctxOn = !ctxOn; renderPredictor(); });
+renderPredictor();
+
+/* ---------- THE LAB ---------- */
+const TOPICS = {
+  start: {
+    idea:"Start school later in the morning",
+    facts:[
+      { claim:"The American Academy of Pediatrics recommends that middle and high schools start no earlier than 8:30 a.m.", src:"AAP policy statement, 2014", real:true,
+        verdict:"Checks out. The AAP published this recommendation in 2014 because teens' sleep cycles shift later during puberty." },
+      { claim:"California passed a law (SB 328) requiring most public high schools to start no earlier than 8:30 a.m., beginning in 2022.", src:"California Senate Bill 328, 2019", real:true,
+        verdict:"Checks out. California was the first state to pass a law like this." },
+      { claim:"A 2021 Harvard study found students at late-start schools raised their GPAs by two full letter grades.", src:"Harvard Journal of Teen Sleep, 2021", real:false,
+        verdict:"Can't find it. There's no journal with that name, and no study shows a jump that big. The AI made up a specific, confident fact. That's a hallucination." },
+    ],
+    summary:"Later start times are clearly better. Teens get more sleep, so every school should switch right away.",
+    answers:{
+      disagree:"Parents who have to drop kids off before work, and coaches who'd lose daylight for practice after school.",
+      missing:"Students with after-school jobs, and districts where elementary and high schools share buses. Moving one schedule moves everyone's.",
+      fail:"If school just ends later and students stay up later, the extra sleep can disappear. It works best with good sleep habits too."
+    },
+    draft:"Our school should start later because science says teens need more sleep."
+  },
+  phones: {
+    idea:"Change the school phone policy",
+    facts:[
+      { claim:"In a 2024 Pew Research Center survey, 72% of U.S. high school teachers said students being distracted by phones is a major problem in class.", src:"Pew Research Center, 2024", real:true,
+        verdict:"Checks out. Pew surveyed teachers in 2024, and high school teachers were the most likely to call phones a major problem." },
+      { claim:"UNESCO's 2023 Global Education Monitoring Report said phones should only be in classrooms when they actually support learning.", src:"UNESCO GEM Report, 2023", real:true,
+        verdict:"Checks out. The report pushed for tech to be used when it helps learning, not by default." },
+      { claim:"Every country in the European Union banned phones in schools in 2020.", src:"EU Education Act of 2020", real:false,
+        verdict:"Can't find it. There's no 'EU Education Act of 2020,' and EU countries set their own school phone rules. The AI made this up and attached a fake source to make it sound official." },
+    ],
+    summary:"Phones are a distraction, so schools should ban them completely.",
+    answers:{
+      disagree:"Parents who want to reach their kids in an emergency, and students who use their phones to stay organized.",
+      missing:"Students who need phones for medical reasons, like glucose monitors, or who use translation and accessibility apps.",
+      fail:"A total ban with no exceptions often gets ignored, and it turns teachers into phone police for the whole day."
+    },
+    draft:"Phones should be banned at school because they're distracting."
+  },
+  mental: {
+    idea:"Let students take mental health days",
+    facts:[
+      { claim:"Oregon (2019) and Illinois (2021) passed laws letting students count mental health days as excused absences.", src:"Oregon and Illinois state laws", real:true,
+        verdict:"Checks out. Both states passed these laws, and other states have followed." },
+      { claim:"In the CDC's 2021 Youth Risk Behavior Survey, 42% of high school students said they felt persistently sad or hopeless.", src:"CDC YRBS, 2021", real:true,
+        verdict:"Checks out. The CDC reported 42% in its 2021 survey, up from earlier years." },
+      { claim:"The College Board found that students who take mental health days score 150 points higher on the SAT.", src:"College Board Wellness Report, 2022", real:false,
+        verdict:"Can't find it. The College Board has no report like this. The number is invented, but it's specific enough to sound believable. That's what makes hallucinations dangerous." },
+    ],
+    summary:"Mental health days help students, so every school should give unlimited days off.",
+    answers:{
+      disagree:"Teachers worried that students will fall behind on lessons and tests they miss.",
+      missing:"Students who don't feel safe at home, for whom school is the calmer place, and students who need real support, not just a day off.",
+      fail:"Without a check-in with a counselor, a day off might hide a bigger problem instead of helping it."
+    },
+    draft:"Students should get mental health days because mental health matters."
+  }
+};
+const QUESTIONS = [
+  { k:"disagree", q:"Who would disagree, and why?" },
+  { k:"missing", q:"Whose point of view is missing?" },
+  { k:"fail", q:"What could make this idea fail?" },
+];
+
+let lab;
+function resetLab(){
+  lab = { step:0, asked:false, topic:null, title:"", checked:{}, kept:{}, questions:[], thesis:"" };
+  renderLab();
+}
+
+function setPills(){
+  document.querySelectorAll("#stepPills .step-pill").forEach((p,i) => {
+    p.className = "step-pill" + (i < lab.step ? " done" : i === lab.step ? " on" : "");
+  });
+}
+
+function renderLab(){
+  setPills();
+  const body = $("#labBody");
+  if(lab.step === 0) body.innerHTML = step0();
+  else if(lab.step === 1) body.innerHTML = step1();
+  else if(lab.step === 2) body.innerHTML = step2();
+  else if(lab.step === 3) body.innerHTML = step3();
+  else body.innerHTML = step4();
+}
+
+function step0(){
+  if(!lab.asked){
+    return `
+      <div class="who hw"><span class="dot"></span>You</div>
+      <p>You have no idea what to talk about. A good moment to use AI as a starting point.</p>
+      <div><button class="btn pencil" data-act="ask" type="button">Ask the AI for ideas</button></div>`;
+  }
+  const opts = Object.entries(TOPICS).map(([k,t]) =>
+    `<button class="opt ${lab.topic===k?'picked':''}" data-act="pick" data-k="${k}" type="button">${esc(lab.topic===k && lab.title ? lab.title : t.idea)}</button>`).join("");
+  return `
+    <div class="who aiw"><span class="dot"></span>AI assistant</div>
+    <div class="ai">Here are three ideas a lot of students pick for this kind of speech:</div>
+    <div class="options">${opts}</div>
+    ${lab.topic ? `
+      <div class="who hw" style="margin-top:6px"><span class="dot"></span>You</div>
+      <div>
+        <label for="titleInput" class="eyebrow" style="display:block;margin-bottom:4px;color:var(--ink)">Put it in your own words</label>
+        <input class="inkfield" id="titleInput" type="text" maxlength="90" value="${esc(lab.title)}" autocomplete="off">
+      </div>` : ``}
+    <div class="lab-foot">
+      <button class="btn pencil" data-act="pickforme" type="button">Just pick for me</button>
+      <button class="btn" data-act="next" type="button" ${lab.topic && lab.title.trim() ? "" : "disabled"}>Next: research</button>
+    </div>
+    <p class="hint">${lab.topic ? "Nice. It turned to ink because you chose it." : "The AI drafted the options. Picking one is your job."}</p>`;
+}
+
+function step1(){
+  const t = TOPICS[lab.topic];
+  const facts = t.facts.map((f,i) => {
+    const kept = lab.kept[i];
+    const cls = kept === true ? "kept" : kept === false ? "tossed" : "";
+    const verdict = lab.checked[i] ? `<div class="verdict ${f.real?'good':'bad'}">${f.real?"&#10003; ":"&#10007; "}${esc(f.verdict)}</div>` : "";
+    return `
+      <div class="fact ${cls}">
+        <p class="claim">${esc(f.claim)}</p>
+        <p class="src">Source the AI gave: ${esc(f.src)}</p>
+        ${verdict}
+        <div class="acts">
+          <button class="mini check" data-act="check" data-i="${i}" type="button" ${lab.checked[i]?"disabled":""}>${lab.checked[i]?"Checked":"Check the source"}</button>
+          <button class="mini" data-act="keep" data-i="${i}" aria-pressed="${kept===true}" type="button">Keep</button>
+          <button class="mini" data-act="toss" data-i="${i}" aria-pressed="${kept===false}" type="button">Toss</button>
+        </div>
+      </div>`;
+  }).join("");
+  const done = t.facts.every((_,i) => lab.kept[i] !== undefined);
+  return `
+    <div class="who aiw"><span class="dot"></span>AI assistant</div>
+    <div class="ai">I found three facts for "${esc(lab.title)}". Each one has a source.</div>
+    ${facts}
+    <div class="lab-foot">
+      <span class="hint">Keep or toss each fact. Checking is up to you, just like in real life.</span>
+      <button class="btn" data-act="next" type="button" ${done?"":"disabled"}>Next: question it</button>
+    </div>`;
+}
+
+function step2(){
+  const t = TOPICS[lab.topic];
+  const btns = QUESTIONS.map(q =>
+    `<button class="mini" data-act="ask-q" data-k="${q.k}" type="button" aria-pressed="${lab.questions.includes(q.k)}">${esc(q.q)}</button>`).join("");
+  const answers = lab.questions.map(k => {
+    const q = QUESTIONS.find(x => x.k === k);
+    return `<div class="answer"><b>${esc(q.q)}</b><br>${esc(t.answers[k])}</div>`;
+  }).join("");
+  return `
+    <div class="who aiw"><span class="dot"></span>AI assistant</div>
+    <div class="ai">Summary: ${esc(t.summary)}</div>
+    <div class="who hw"><span class="dot"></span>You</div>
+    <p>That sounds a little too simple. Push back on it. Ask at least one question.</p>
+    <div class="qbtns">${btns}</div>
+    ${answers}
+    <div class="lab-foot">
+      <span class="hint">${lab.questions.length ? "See how much the first summary left out?" : "AI gave you the most common take. What's missing?"}</span>
+      <button class="btn" data-act="next" type="button" ${lab.questions.length?"":"disabled"}>Next: decide</button>
+    </div>`;
+}
+
+function step3(){
+  const t = TOPICS[lab.topic];
+  return `
+    <div class="who aiw"><span class="dot"></span>AI assistant</div>
+    <div class="ai"><span class="tag">Draft thesis &middot; pencil</span><div>${esc(t.draft)}</div></div>
+    <div class="who hw"><span class="dot"></span>You</div>
+    <p>Now write what <i>you</i> actually think, in your own words. Use what you checked and what you learned from your questions.</p>
+    <label for="thesisInput" class="eyebrow" style="color:var(--ink)">My position</label>
+    <textarea class="inkfield" id="thesisInput" maxlength="300" placeholder="I think our school should...">${esc(lab.thesis)}</textarea>
+    <div class="lab-foot">
+      <span class="hint" id="thesisHint">${lab.thesis.trim().length >= 20 ? "Ready when you are." : "Write at least a full sentence."}</span>
+      <button class="btn red" data-act="next" type="button" ${lab.thesis.trim().length >= 20 ? "" : "disabled"}>Ink it</button>
+    </div>`;
+}
+
+function step4(){
+  const t = TOPICS[lab.topic];
+  const fakeIdx = t.facts.findIndex(f => !f.real);
+  const keptFake = lab.kept[fakeIdx] === true;
+  const nChecked = Object.keys(lab.checked).length;
+  const nKept = Object.values(lab.kept).filter(Boolean).length;
+  let verdict;
+  if(keptFake){
+    verdict = `<div class="verdict-big" style="background:var(--red-soft);color:var(--red)"><b>You kept the made-up fact.</b> That's exactly how an AI mistake turns into a human mistake. In front of a class, that's your credibility on the line. Want to try again and check this time?</div>`;
+  } else if(lab.checked[fakeIdx]){
+    verdict = `<div class="verdict-big" style="background:var(--ok-soft);color:var(--ok)"><b>You caught the hallucination.</b> You checked, saw the source didn't exist, and tossed it. That's the job.</div>`;
+  } else {
+    verdict = `<div class="verdict-big" style="background:var(--ink-soft);color:var(--ink)"><b>You tossed the fake fact without checking it.</b> Good instinct. Next time, check first, so you know <i>why</i> it's wrong.</div>`;
+  }
+  return `
+    <p class="eyebrow">Your speech, decided</p>
+    <div class="human"><span class="tag">Your thesis &middot; pen</span><div>${esc(lab.thesis)}</div><span class="stamp pop">Decided by a human</span></div>
+    ${verdict}
+    <div class="report">
+      <div class="ai"><span class="tag">What the AI did (pencil)</span>
+        <ul>
+          <li>Brainstormed 3 common ideas</li>
+          <li>Found 3 facts, 1 of them fake</li>
+          <li>Wrote a one-sided summary</li>
+          <li>Drafted a basic thesis</li>
+        </ul>
+      </div>
+      <div class="human"><span class="tag">What you did (pen)</span>
+        <ul>
+          <li>Chose: ${esc(lab.title)}</li>
+          <li>Checked ${nChecked} of 3 sources</li>
+          <li>Kept ${nKept} fact${nKept===1?"":"s"}${keptFake?", including the fake one":""}</li>
+          <li>Asked ${lab.questions.length} hard question${lab.questions.length===1?"":"s"}</li>
+          <li>Wrote your own position</li>
+        </ul>
+      </div>
+    </div>
+    <p>The AI saved you time. Every decision that mattered was yours.</p>
+    <div><button class="btn ghost" data-act="restart" type="button">Run the Lab again</button></div>`;
+}
+
+$("#labBody").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if(!b || b.disabled) return;
+  const act = b.dataset.act;
+  if(act === "ask"){ lab.asked = true; renderLab(); }
+  else if(act === "pick"){
+    lab.topic = b.dataset.k; lab.title = TOPICS[lab.topic].idea;
+    lab.checked = {}; lab.kept = {}; lab.questions = []; lab.thesis = "";
+    renderLab();
+    const ti = $("#titleInput"); if(ti){ ti.focus(); ti.select(); }
+  }
+  else if(act === "pickforme"){
+    openModal("That one's yours.", "I could pick, but I'd just go with whatever shows up most in my training data. You know which topic you actually care about, and you're the one giving this speech. Look at the three ideas and choose the one you'd want to argue for.");
+  }
+  else if(act === "check"){ lab.checked[b.dataset.i] = true; renderLab(); }
+  else if(act === "keep"){ lab.kept[b.dataset.i] = true; renderLab(); }
+  else if(act === "toss"){ lab.kept[b.dataset.i] = false; renderLab(); }
+  else if(act === "ask-q"){ if(!lab.questions.includes(b.dataset.k)) lab.questions.push(b.dataset.k); renderLab(); }
+  else if(act === "next"){
+    lab.step++; renderLab();
+    document.getElementById("lab").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  else if(act === "restart"){ resetLab(); document.getElementById("lab").scrollIntoView({behavior:"smooth"}); }
+});
+$("#labBody").addEventListener("input", e => {
+  if(e.target.id === "titleInput"){
+    lab.title = e.target.value;
+    const picked = $("#labBody .opt.picked"); if(picked) picked.textContent = lab.title || TOPICS[lab.topic].idea;
+    const nb = $('#labBody [data-act="next"]'); if(nb) nb.disabled = !lab.title.trim();
+  }
+  if(e.target.id === "thesisInput"){
+    lab.thesis = e.target.value;
+    const ok = lab.thesis.trim().length >= 20;
+    $('#labBody [data-act="next"]').disabled = !ok;
+    $("#thesisHint").textContent = ok ? "Ready when you are." : "Write at least a full sentence.";
+  }
+});
+resetLab();
+
+/* ---------- sorter ---------- */
+const LEVELS = { ai:"AI can handle it", both:"AI helps, human decides", human:"Human only" };
+const SITUATIONS = [
+  { s:"Coming up with a list of possible names for a new club", team:"ai",
+    why:"Low stakes, and more ideas is better. You'll still vote on the name as a group." },
+  { s:"Summarizing a 30-page article for a research project", team:"both",
+    why:"Great for getting the gist. But summaries leave things out, so read the parts you plan to quote." },
+  { s:"Choosing which colleges to apply to", team:"both",
+    why:"AI can find deadlines, costs, and programs fast. Only you know where you'd actually be happy." },
+  { s:"Writing an apology text to a friend", team:"human",
+    why:"An apology only means something if it's in your words. Your friend can tell." },
+  { s:"Checking the steps on your math homework", team:"both",
+    why:"Use it to find where you went wrong. Then make sure you understand the fix, because the test won't have a chatbot." },
+  { s:"Deciding whether a classmate cheated on an essay", team:"human",
+    why:"AI detectors make mistakes. OpenAI shut down its own AI-writing detector in 2023 because it wasn't accurate enough. A wrong accusation can follow a student, so a teacher has to look at the evidence and talk to them." },
+  { s:"Translating a menu while on a trip", team:"ai",
+    why:"Quick, low risk, and really useful. If you have a food allergy, though, ask a person." },
+  { s:"Picking who makes the basketball team", team:"human",
+    why:"This affects real people's confidence and friendships. A coach who watched them play needs to own the call and explain it." },
+];
+const sorted = {};
+function renderSorter(){
+  $("#sorter").innerHTML = SITUATIONS.map((x,i) => {
+    const mine = sorted[i];
+    const btns = Object.entries(LEVELS).map(([v,l]) =>
+      `<button type="button" data-i="${i}" data-v="${v}" aria-pressed="${mine===v}">${esc(l)}</button>`).join("");
+    const take = mine ? `<div class="take"><span class="agree">${mine===x.team ? "We agree." : `We'd say: ${esc(LEVELS[x.team])}.`}</span> ${esc(x.why)}${mine!==x.team ? " <i>Still think you're right? Good. You're doing the thinking.</i>" : ""}</div>` : "";
+    return `<div class="sort-card"><p class="sit">${esc(x.s)}</p><div class="sort-opts" role="group" aria-label="${esc(x.s)}">${btns}</div>${take}</div>`;
+  }).join("");
+  const n = Object.keys(sorted).length;
+  const agree = Object.entries(sorted).filter(([i,v]) => SITUATIONS[i].team === v).length;
+  $("#sortCount").textContent = n === SITUATIONS.length
+    ? `All 8 sorted. You matched our team on ${agree}. The rest is up to you.`
+    : `${n} of 8 sorted`;
+}
+$("#sorter").addEventListener("click", e => {
+  const b = e.target.closest("button[data-v]"); if(!b) return;
+  sorted[b.dataset.i] = b.dataset.v; renderSorter();
+});
+renderSorter();
+
+/* ---------- voices ---------- */
+$("#voiceGrid").innerHTML = TEAM.map(m => `
+  <figure class="voice ${m.lead?'lead-v':''}" style="margin:0">
+    <span class="theme">${esc(m.theme)}</span>
+    <blockquote>"${esc(m.quote)}"</blockquote>
+    <figcaption class="by">${esc(m.name)} &middot; ${esc(m.role)}</figcaption>
+  </figure>`).join("");
+
+/* ---------- pledge board ---------- */
+let pledges = store.get("pp-pledges", []);
+function renderBoard(){
+  const all = [...TEAM_PLEDGES.map(t => ({t, team:true})), ...pledges.map(t => ({t, team:false}))];
+  $("#board").innerHTML = all.map((p,i) =>
+    `<div class="sticky" style="--r:${((i*37)%7)-3}deg"><small>${p.team ? "From our team" : "Signed here"}</small>${esc(p.t)}</div>`).join("");
+}
+$("#pledgeForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = $("#pledgeInput").value.trim();
+  const msg = $("#pledgeMsg");
+  if(v.length < 3){ msg.hidden = false; msg.textContent = "Write a few words first. It's your call what goes here."; return; }
+  pledges.push(v); pledges = pledges.slice(-12); store.set("pp-pledges", pledges);
+  $("#pledgeInput").value = ""; msg.hidden = false; msg.textContent = "Signed in pen.";
+  renderBoard();
+});
+renderBoard();
+
+/* ---------- nav highlight ---------- */
+const links = [...document.querySelectorAll(".navlinks a")];
+if("IntersectionObserver" in window){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
+      }
+    });
+  }, { rootMargin:"-40% 0px -55% 0px" });
+  document.querySelectorAll("main section").forEach(s => io.observe(s));
+}
+</script>
+</body>
+</html>
