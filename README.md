@@ -6,7 +6,7 @@ Our Tech Corps Hackathon project. We believe AI is a powerful tool for finding i
 
 ## What's here
 
-- `site/index.html`: the interactive site. It's one file with no build step. Open it in any browser.
+- `index.html`: the interactive site. It's one file with no build step. Open it in any browser.
 - `SCRIPT.md`: the 5-minute pitch script for all five speakers, with a rubric checklist and Q&A prep.
 
 ## Sections of the site
@@ -21,4 +21,4 @@ Our Tech Corps Hackathon project. We believe AI is a powerful tool for finding i
 
 ## Personalizing
 
-Edit `TEAM_NAME`, `TEAM`, and `TEAM_PLEDGES` at the top of the `<script>` in `site/index.html`. Use your real stories.
+Edit `TEAM_NAME`, `TEAM`, and `TEAM_PLEDGES` at the top of the `<script>` in `index.html`. Use your real stories.
