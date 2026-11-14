@@ -1,132 +1,110 @@
-# Pencil & Pen: 5-Minute Pitch Script
+# Pencil & Pen: 5-Minute Script
 
-**Core belief:** AI is a powerful tool for finding information and brainstorming ideas, but it should never dictate your decisions. The final call, and the responsibility that comes with it, stays with people.
+**Core belief:** AI is a powerful tool for finding information and brainstorming ideas, but it should never make your decisions for you. The final call, and the responsibility for it, belongs to people.
 
 **Tagline:** AI holds the pencil. You hold the pen.
 
-| Speaker | Part | Time | Rubric points it hits |
-|---|---|---|---|
-| **Lead (you)** | Hook, belief, live Lab demo, close | ~2:25 total | Clear Beliefs, AI Connection, Teen Voices, Creative Communication |
-| Member 2 | How the AI actually works | ~0:45 | AI Connection |
-| Member 3 | The three human jobs | ~0:40 | Human Responsibility |
-| Member 4 | Our stories | ~0:35 | Teen Voices |
-| Member 5 | Why it looks like this | ~0:35 | Creative Communication |
+About 730 spoken words, which is 5 minutes at a normal pace. *[Brackets]* are actions, not lines. Replace every *(your real story)* with something true from your team.
 
-About 720 spoken words, which comes out near 5:00 at a calm pace. Lines in *[brackets]* are actions, not things to say.
-
-> **Before you present:** the stories below are examples. Swap in your team's **real** experiences. The "Teen Voices" score depends on them being true and yours. Change the names and quotes in the `TEAM` list at the top of the `<script>` in `site/index.html` too.
+| Speaker | Time | Rubric row |
+|---|---|---|
+| Lead (you) | 0:00–1:10, 2:00–3:10, 4:40–5:00 | Clear Beliefs, AI Connection, Creative Communication |
+| Member 2 | 1:10–2:00 | AI Connection |
+| Member 3 | 3:10–3:45 | Human Responsibility |
+| Member 4 | 3:45–4:10 | Teen Voices |
+| Member 5 | 4:10–4:40 | Creative Communication |
 
 ---
 
-## 0:00 – 0:45 · LEAD: Hook + belief
+### LEAD (0:00–0:40) · Hook and core belief
+*[Site open on the top section.]*
 
-*[Site open on the top section. Don't click anything yet.]*
+Raise your hand if you've used AI for homework this year.
 
-Quick question. Raise your hand if you've used AI for homework this year.
+*[pause]*
 
-*[pause, look around]*
+Yeah, us too. All five of us use it, pretty much every week. So we're not here to tell you to stop.
 
-Yeah. Pew Research found the number of teens using ChatGPT for schoolwork doubled in one year. So we're not here to tell you to stop.
+But in 2023, two lawyers in New York handed a judge six court cases that ChatGPT had made up. They sounded real. Nobody checked. The lawyers got fined five thousand dollars.
 
-But in 2023, two lawyers in New York walked into court with six cases ChatGPT had invented. They looked real. Nobody checked. They got fined five thousand dollars.
+That story is why we built this. Our team believes that **AI is a powerful tool for finding information and brainstorming ideas, but it should never make your decisions for you.** The final call, and the responsibility for it, belongs to people.
 
-That's what our project is about. Our team believes **AI is a great tool for finding information and brainstorming ideas, but it should never dictate your decisions.** We put it like this:
+We put it in one line: **AI holds the pencil. You hold the pen.** Pencil is a draft, and you can erase it. Pen is what you sign your name to.
 
-*[point at the headline]*
-
-**AI holds the pencil. You hold the pen.** Pencil is a draft. You can erase it. Pen is the part you sign your name to.
-
-## 0:45 – 1:10 · LEAD: The three supporting ideas
-
+### LEAD (0:40–1:10) · Three reasons
 *[Scroll to "What we believe." Tap each card as you say it.]*
 
-Three ideas hold that up. One: AI is a great starting point. All five of us use it. Two: it's guessing. It doesn't know what's true, and it doesn't know you. And three: deciding is a skill. Every time you let an app decide for you, you skip the practice.
+We have three reasons. First, AI is a really good starting point. It finds stuff fast and gives you ideas when you're stuck. Second, it's basically guessing. It doesn't know what's true, and it doesn't know you. Third, deciding is a skill. If you let an app make every choice, you get worse at making them yourself.
 
-[Member 2] is going to show you what "guessing" actually means.
+[Member 2] is going to show you what we mean by guessing.
 
-## 1:10 – 1:55 · MEMBER 2: How the AI works
+### MEMBER 2 (1:10–2:00) · What the AI is actually doing
+*[Scroll to "How AI works." Click "College major."]*
 
-*[Scroll to "How AI works." Click the "College major" chip.]*
+The AI we're talking about is the chatbots students use every day, like ChatGPT, Gemini, and Snapchat's My AI. Pew Research found that the share of teens using ChatGPT for schoolwork doubled in one year.
 
-When you ask a chatbot something, it writes its answer one word at a time. For every word, it ranks what's most likely to come next, based on patterns from billions of sentences other people wrote.
-
-So if I type "The best college major for me is," it says Computer Science. Not because it knows me. That's just the most common answer.
+So what is it doing? A chatbot writes one word at a time. For each word, it ranks what's most likely to come next, based on patterns in text other people wrote. So if I type "the best college major for me is," it says Computer Science. That's not because it knows me. It's just the most common answer.
 
 *[Click "Tell it: I love drawing and hate sitting still."]*
 
-If I tell it more, it gets closer. Graphic design. But it's still ranking what other people usually say. It can't know what's right for *me*.
+If I tell it more about me, it gets closer: graphic design. But it's still guessing from other people's words. That's also how it ends up making things up, like those fake court cases. It predicts what *sounds* right.
 
-That's also why it makes stuff up. It's predicting what *sounds* right. Google's own Bard ad got a space fact wrong. And it matters because if the AI is wrong and you don't check, its mistake becomes your mistake.
+Here's why that matters: if it's wrong and you don't check, its mistake becomes your mistake. Your name is on the essay, not the chatbot's.
 
-## 1:55 – 3:05 · LEAD: Live demo of the Lab
+### LEAD (2:00–3:10) · Live demo of the Lab
+*[Scroll to "The Lab." Practice this part at least three times.]*
 
-*[Scroll to "The Lab." Do this live. Practice it at least three times.]*
-
-So we built something that lets you feel the difference. Here's the assignment: a persuasive speech about something you'd change at school.
+So we built a way to feel the difference. The assignment is a persuasive speech about something you'd change at school.
 
 *[Click "Ask the AI for ideas."]*
 
-The AI brainstorms. Notice it's written in gray pencil handwriting. That's on purpose.
+The AI brainstorms. See how it's written in gray pencil? Everything the AI says on our site looks like that, because it's a draft.
 
-*[Click "Just pick for me." Read the popup out loud, briefly.]*
+*[Click "Just pick for me."]*
 
-And when I try to make it choose for me, it won't. "That one's yours." We built that on purpose.
+Now watch what happens when I try to make it decide for me. It refuses. "Nope, that one's yours." We built that on purpose.
 
-*[Close it. Click "Change the school phone policy." Retype a few words of the title.]*
+*[Close the popup. Click "Change the school phone policy" and retype a few words.]*
 
-When I pick, it turns into blue handwriting. Ink. That's my decision now.
+When I choose, it turns into blue pen. Now it's my decision.
 
-*[Click Next. Click "Check the source" on all three facts.]*
+*[Click Next. Click "Check the source" on all three.]*
 
-Now the AI gives me three facts, all with sources. Two are real. This one, "Every EU country banned phones in 2020," with a source that sounds official? Doesn't exist. That's a hallucination.
+Next it gives me three facts with sources. Two are real. This one says every EU country banned phones in 2020, and it even has an official-sounding source. It's completely made up. That's called a hallucination, so I toss it.
 
-*[Toss it, keep the others, click Next. Click "Whose point of view is missing?"]*
+*[Toss it, keep the others, click Next, then click "Whose side is missing?"]*
 
-Then it gives me a one-sided summary, so I push back. It left out students who need phones for medical reasons.
+Then it gives me a one-sided summary, so I push back. It forgot about students who need their phones for medical reasons.
 
-*[Click Next, type a short thesis, click "Write it in pen."]*
+*[Click Next, type one sentence, then click "Write it in pen."]*
 
-And at the end, I write my position. Stamped: decided by a human. The AI saved me time. Every decision that mattered was mine.
+Finally I write my own position, and it's stamped "Decided by a human." The AI saved me time, but I made every decision that mattered.
 
-## 3:05 – 3:45 · MEMBER 3: The three human jobs
+### MEMBER 3 (3:10–3:45) · Where humans stay in charge
+*[Scroll to "Your jobs."]*
 
-*[Scroll to "Human jobs."]*
+So where exactly should people stay involved? We came up with three jobs AI doesn't get.
 
-So where exactly do people need to stay involved? We landed on three jobs.
+**Check:** look up anything before you use it, because AI sounds just as confident when it's wrong. **Question:** ask who disagrees and what's missing, because AI goes with the most common answer. **Decide:** make the final call yourself, because a program can't take responsibility. You can.
 
-**Check.** Look up anything before you use it, because AI sounds just as confident when it's wrong.
+Our line is this: the more a decision affects a person, like their grades, health, or friendships, the more a human has to hold the pen. For example, AI cheating detectors have flagged students who didn't cheat. OpenAI even shut down its own detector because it wasn't accurate. A teacher should make that call, not a program.
 
-**Question.** Ask who disagrees and what's missing, because AI leans toward the most common answer.
+### MEMBER 4 (3:45–4:10) · Our stories
+*[Scroll to "Our stories."]*
 
-**Decide.** Make the final call and own it, because AI can't be held responsible. You can.
+For us, this comes from real life. *(Your real story. Example:)* I asked a chatbot for sources for a history paper, and two of the five didn't exist. I only caught it because my teacher made us paste the links. *(Lead's real story:)* [Lead] let AI plan their whole study schedule, and it didn't know they had practice twice a week.
 
-And here's our line: *the more a decision affects a person, like their grades, health, or friendships, the more a human has to hold the pen.* For example, AI detectors have accused students of cheating when they didn't. OpenAI even shut down its own detector because it wasn't accurate. A teacher needs to make that call, not a program.
+We're some of the first students with AI in every class. What we hope for is that schools teach us *how* to use it instead of just banning it.
 
-*[Optional if time: tap one card in "Pencil or pen?"]*
+### MEMBER 5 (4:10–4:40) · How we made it
+*[Scroll to "How we made it."]*
 
-## 3:45 – 4:20 · MEMBER 4: Our stories
+Every design choice shows our belief. We almost plugged in a real chatbot, but a real AI could make up facts at random, and we didn't want our own site fooling people. So we wrote the AI's lines ourselves and put in one fake fact on purpose. The AI writes in gray pencil because its work is a draft. You write in blue pen because your decisions count. Red is for checking, and this time you're holding the red pen. And we argued for a whole meeting about the "Pick for me" button. We kept it because it makes our point better than any sentence could.
 
-*[Scroll to "Our voices."]*
+### LEAD (4:40–5:00) · Close
+*[Scroll to the bottom so the tagline shows.]*
 
-This isn't just a theory for us. *(Replace with your own true story.)* I asked a chatbot for sources for a history paper, and two of the five didn't exist. I only caught it because my teacher made us paste the links.
-
-[Member 3] realized their For You page was deciding what "normal" looked like for them. And [Lead] let AI plan their whole study schedule. It didn't know they had practice twice a week.
-
-We're the first students growing up with AI in every class. Our hope is that schools teach us *how* to use it, not just ban it.
-
-## 4:20 – 4:45 · MEMBER 5: Why it looks like this
-
-*[Scroll to "Why it looks like this."]*
-
-We changed our minds a lot building this. At first we wanted to plug in a real chatbot, but a real AI could make up facts at random, and we didn't want our own site fooling people. So we wrote the AI's lines ourselves, with one fake fact on purpose. Then the look: the AI writes in gray pencil because it's a draft. You write in blue pen, and only human choices get ink. Red is checking, like a teacher's red pen, except you're holding it. The "Pick for me" button never works. And the Lab won't move forward until you choose. We argued about that button for a whole meeting and kept it, because it says our point better than any sentence.
-
-## 4:45 – 5:00 · LEAD: Close
-
-*[Scroll to the bottom so the tagline is on screen.]*
-
-So use AI. Let it find things. Let it brainstorm. Let it sketch.
-
-But when it's time to decide what you believe, who you trust, or who you want to be:
+So use AI. Let it look things up, and let it brainstorm. But when it's time to decide what you believe, who you trust, or who you want to be, remember:
 
 **AI holds the pencil. You hold the pen.**
 
@@ -134,17 +112,17 @@ Thank you.
 
 ---
 
-## Rubric checklist
+## How each rubric row is covered
 
-- **Clear Beliefs:** one core belief, said word for word at 0:30 and repeated at the close, plus three supporting ideas (starting point / it's guessing / deciding is a skill).
-- **AI Connection:** a specific real situation (students using chatbots like ChatGPT for school and life choices), an explanation of next-word prediction with a live demo, real cases (Mata v. Avianca, Google's Bard ad), and why it matters (its mistake becomes yours).
-- **Teen Voices:** personal stories from every member, the "first students growing up with AI" framing, a hope (teach us, don't just ban it), and the team's own design argument about the button.
-- **Creative Communication:** a working interactive site, and the pencil vs. pen look explained out loud, the "we almost built a real chatbot" story, the button that refuses to decide and a Lab that waits for you.
-- **Human Responsibility:** three named jobs (Check, Question, Decide), each with a reason, plus a clear boundary ("the more it affects a person, the more a human holds the pen") and the AI-detector example.
+- **Clear Beliefs:** the belief is said word for word at 0:30 and backed by three reasons. The tagline opens and closes the pitch.
+- **AI Connection:** it names a specific real situation (students using chatbots for school), explains next-word prediction with a live demo, gives real examples (Mata v. Avianca, AI detectors), and says why it matters (its mistake becomes yours).
+- **Teen Voices:** "all five of us use it," personal stories, a hope for schools, and the team's own design arguments.
+- **Creative Communication:** a working site, plus out-loud explanations of the pencil/pen look, the "Pick for me" button, and why you didn't use a real chatbot.
+- **Human Responsibility:** three named jobs (Check, Question, Decide), a reason for each, a clear boundary, and a concrete example.
 
-## Q&A prep
+## If judges ask
 
-- **"Aren't you just anti-AI?"** No. Idea 1 is literally "AI is a great starting point." We use it all the time. We just don't let it make the call.
-- **"Isn't the AI in your Lab fake?"** Yes, on purpose. We scripted it so we could guarantee a realistic hallucination to catch every time. The facts marked "checks out" are real and we verified them.
-- **"What if AI gets good enough to never be wrong?"** It still wouldn't know what *you* value, and it still couldn't be responsible for the outcome. Deciding stays human.
-- **"Did you use AI to build this?"** Answer honestly. If you did: "Yes, as a pencil. We chose the belief, the stories, and the design, and we changed what didn't fit us."
+- **"Are you against AI?"** No. Our first reason is that it's a great starting point. We just don't let it make the call.
+- **"Is the AI in your Lab real?"** No, and that was on purpose, so the fake fact shows up every time. The facts marked real are real.
+- **"What if AI stops making mistakes?"** It still won't know what you value, and it still can't be responsible. Deciding stays human.
+- **"Did you use AI to build this?"** Answer honestly. If you did: "Yes, as a pencil. We picked the belief, the stories, and the design, and we changed what didn't fit."
