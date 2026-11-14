@@ -66,7 +66,7 @@ So we built something that lets you feel the difference. Here's the assignment: 
 
 *[Click "Ask the AI for ideas."]*
 
-The AI brainstorms. Notice it's in gray, dashed, typewriter text. That's pencil.
+The AI brainstorms. Notice it's written in gray pencil handwriting. That's on purpose.
 
 *[Click "Just pick for me." Read the popup out loud, briefly.]*
 
@@ -84,7 +84,7 @@ Now the AI gives me three facts, all with sources. Two are real. This one, "Ever
 
 Then it gives me a one-sided summary, so I push back. It left out students who need phones for medical reasons.
 
-*[Click Next, type a short thesis, click "Ink it."]*
+*[Click Next, type a short thesis, click "Write it in pen."]*
 
 And at the end, I write my position. Stamped: decided by a human. The AI saved me time. Every decision that mattered was mine.
 
@@ -118,7 +118,7 @@ We're the first students growing up with AI in every class. Our hope is that sch
 
 *[Scroll to "Why it looks like this."]*
 
-Every design choice carries our belief. Gray dashed typewriter text is AI. It's pencil. Blue handwriting is you, and only human choices get ink. Red is checking, like a teacher's red pen, except you're holding it. The "Pick for me" button never works. And the Lab won't move forward until you choose. We argued about that button for a whole meeting and kept it, because it says our point better than any sentence.
+We changed our minds a lot building this. At first we wanted to plug in a real chatbot, but a real AI could make up facts at random, and we didn't want our own site fooling people. So we wrote the AI's lines ourselves, with one fake fact on purpose. Then the look: the AI writes in gray pencil because it's a draft. You write in blue pen, and only human choices get ink. Red is checking, like a teacher's red pen, except you're holding it. The "Pick for me" button never works. And the Lab won't move forward until you choose. We argued about that button for a whole meeting and kept it, because it says our point better than any sentence.
 
 ## 4:45 – 5:00 · LEAD: Close
 
@@ -139,7 +139,7 @@ Thank you.
 - **Clear Beliefs:** one core belief, said word for word at 0:30 and repeated at the close, plus three supporting ideas (starting point / it's guessing / deciding is a skill).
 - **AI Connection:** a specific real situation (students using chatbots like ChatGPT for school and life choices), an explanation of next-word prediction with a live demo, real cases (Mata v. Avianca, Google's Bard ad), and why it matters (its mistake becomes yours).
 - **Teen Voices:** personal stories from every member, the "first students growing up with AI" framing, a hope (teach us, don't just ban it), and the team's own design argument about the button.
-- **Creative Communication:** a working interactive site, and the pencil vs. ink visual language explained out loud, along with the button that refuses to decide and a Lab that waits for you.
+- **Creative Communication:** a working interactive site, and the pencil vs. pen look explained out loud, the "we almost built a real chatbot" story, the button that refuses to decide and a Lab that waits for you.
 - **Human Responsibility:** three named jobs (Check, Question, Decide), each with a reason, plus a clear boundary ("the more it affects a person, the more a human holds the pen") and the AI-detector example.
 
 ## Q&A prep
